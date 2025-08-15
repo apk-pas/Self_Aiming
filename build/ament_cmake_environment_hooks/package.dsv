@@ -1,0 +1,4 @@
+source;share/self_aiming/local_setup.bash
+source;share/self_aiming/local_setup.dsv
+source;share/self_aiming/local_setup.sh
+source;share/self_aiming/local_setup.zsh

@@ -1,0 +1,10 @@
+/home/apk/rosdemo/src/self_aiming/build/CMakeFiles/uninstall.dir
+/home/apk/rosdemo/src/self_aiming/build/CMakeFiles/self_aiming_uninstall.dir
+/home/apk/rosdemo/src/self_aiming/build/CMakeFiles/opencv.dir
+/home/apk/rosdemo/src/self_aiming/build/CMakeFiles/test.dir
+/home/apk/rosdemo/src/self_aiming/build/CMakeFiles/edit_cache.dir
+/home/apk/rosdemo/src/self_aiming/build/CMakeFiles/rebuild_cache.dir
+/home/apk/rosdemo/src/self_aiming/build/CMakeFiles/list_install_components.dir
+/home/apk/rosdemo/src/self_aiming/build/CMakeFiles/install.dir
+/home/apk/rosdemo/src/self_aiming/build/CMakeFiles/install/local.dir
+/home/apk/rosdemo/src/self_aiming/build/CMakeFiles/install/strip.dir
