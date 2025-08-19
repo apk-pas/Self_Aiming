@@ -3,20 +3,13 @@
 <package format="3">
   <name>self_aiming</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="apk@todo.todo">apk</maintainer>
-  <license>TODO: License declaration</license>
+  <description>self_aiming task</description>
+  <maintainer email="1991170159@qq.com">apk</maintainer>
+  <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>rclcpp</depend>
-  <depend>sensor_msgs</depend>
-  <depend>cv_bridge</depend>
-  <depend>image_transport</depend>
-  <depend>geometry_msgs</depend>
-  <depend>tf2</depend>
-  <depend>tf2_ros</depend>
-  <depend>tf2_geometry_msgs</depend>
   <depend>opencv2</depend>
 
   <test_depend>ament_lint_auto</test_depend>

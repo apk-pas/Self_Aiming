@@ -8,20 +8,19 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(sensor_msgs REQUIRED)
-find_package(cv_bridge REQUIRED)
-find_package(image_transport REQUIRED)
-find_package(geometry_msgs REQUIRED)
-find_package(tf2 REQUIRED)
-find_package(tf2_ros REQUIRED)
-find_package(tf2_geometry_msgs REQUIRED)
 find_package(OpenCV 4 REQUIRED)
 
 file(GLOB_RECURSE SOURCES "src/*.cpp")
-add_executable(opencv ${SOURCES})
+add_executable(self_aiming ${SOURCES})
 
-target_link_libraries(opencv PUBLIC ${OpenCV_LIBS})
-target_include_directories(opencv PUBLIC ${OpenCV_INCLUDE_DIRS})
+ament_target_dependencies(self_aiming
+  rclcpp
+  OpenCV
+)
+
+install(TARGETS self_aiming
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
