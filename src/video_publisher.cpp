@@ -4,42 +4,7 @@
 using namespace std;
 using namespace cv; 
 
-VideoPublisher::VideoPublisher() : Node("video_publisher"), current_frames_(0), total_frames_(0)
-{
-    // 初始化参数
-    initialize_parameters();
-    
-    // 创建图像发布器
-    image_pub_ = image_transport::create_publisher(this, "image_raw");
-    
-    // 打开视频源
-    if (!open_video_source()) {
-        RCLCPP_ERROR(this->get_logger(), "无法打开视频源，节点将退出");
-        rclcpp::shutdown();
-        return;
-    }
-    
-    // 创建定时器，控制发布帧率
-    auto period = chrono::milliseconds(1000 / frame_rate_);
-    timer_ = this->create_wall_timer(
-        period,
-        bind(&VideoPublisher::publish_frame, this)
-    );
-    
-    RCLCPP_INFO(this->get_logger(), "视频发布节点已启动，输入类型: %s", input_type_.c_str());
-    if (input_type_ == "video") {
-        RCLCPP_INFO(this->get_logger(), "视频总帧数: %d,将循环播放", total_frames_);
-    }
-}
-
-VideoPublisher::~VideoPublisher()
-{
-    if (cap_.isOpened()) {
-        cap_.release();
-    }
-}
-
-void VideoPublisher::initialize_parameters()
+VideoPublisher::VideoPublisher(): Node("video_publisher")
 {
     // 声明参数并设置默认值
     this->declare_parameter<string>("input_type", "camera");
@@ -52,6 +17,25 @@ void VideoPublisher::initialize_parameters()
     this->get_parameter("video_path", video_path_);
     this->get_parameter("camera_id", camera_id_);
     this->get_parameter("frame_rate", frame_rate_);
+
+    // 创建图像发布器
+    image_pub_ = image_transport::create_publisher(this, "image_raw");
+    
+    // 打开视频源
+    if (!open_video_source()) {
+        RCLCPP_ERROR(this->get_logger(), "无法打开视频,退出程序");
+        rclcpp::shutdown();
+        return;
+    }
+    
+    // 创建定时器，控制发布帧率
+    auto period = chrono::milliseconds(1000 / frame_rate_);
+    timer_ = this->create_wall_timer(
+        period,
+        bind(&VideoPublisher::publish_frame, this)
+    );
+    
+    RCLCPP_INFO(this->get_logger(), "%s发布节点已启动", input_type_.c_str());
 }
 
 bool VideoPublisher::open_video_source()
@@ -59,10 +43,10 @@ bool VideoPublisher::open_video_source()
     if (input_type_ == "camera") {
         // 打开USB相机
         if (!cap_.open(camera_id_)) {
-            RCLCPP_ERROR(this->get_logger(), "无法打开USB相机,ID: %d", camera_id_);
+            RCLCPP_ERROR(this->get_logger(), "无法打开USB相机%d", camera_id_);
             return false;
         }
-        RCLCPP_INFO(this->get_logger(), "成功打开USB相机,ID: %d", camera_id_);
+        RCLCPP_INFO(this->get_logger(), "成功打开USB相机%d", camera_id_);
         return true;
     } 
     else if (input_type_ == "video") {
@@ -82,7 +66,6 @@ bool VideoPublisher::open_video_source()
         RCLCPP_INFO(this->get_logger(), "成功打开视频文件: %s", video_path_.c_str());
         return true;
     }
-    
     RCLCPP_ERROR(this->get_logger(), "无效的输入类型: %s,支持的类型为 'camera' 或 'video'", input_type_.c_str());
     return false;
 }
@@ -98,7 +81,6 @@ void VideoPublisher::publish_frame()
         
         // 检查是否播放完毕
         if (frame.empty() || current_frames_ >= total_frames_) {
-            RCLCPP_INFO(this->get_logger(), "视频播放完毕,将重新开始 (总帧数: %d)", total_frames_);
             reset_video();
             cap_ >> frame;
             current_frames_ = 1;
@@ -116,16 +98,9 @@ void VideoPublisher::publish_frame()
         msg->header.stamp = this->now();
         msg->header.frame_id = "camera_frame";
         image_pub_.publish(msg);
-        
-        // 视频模式下打印当前播放进度
-        if (input_type_ == "video" && current_frames_ % 30 == 0) {
-            RCLCPP_INFO_THROTTLE(this->get_logger(), 
-                               *this->get_clock(), 1000,  // 每1秒最多打印一次
-                               "播放进度: %d/%d 帧", current_frames_, total_frames_);
-        }
     } 
     catch (cv_bridge::Exception& e) {
-        RCLCPP_ERROR(this->get_logger(), "cv_bridge转换错误: %s", e.what());
+        RCLCPP_ERROR(this->get_logger(), "视频格式转换错误: %s", e.what());
     }
 }
 

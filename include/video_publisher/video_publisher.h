@@ -10,12 +10,8 @@ class VideoPublisher : public rclcpp::Node
 {
 public:
     VideoPublisher();
-    ~VideoPublisher() override;
 
 private:
-    // 初始化参数
-    void initialize_parameters();
-    
     // 打开视频源
     bool open_video_source();
     
@@ -39,6 +35,6 @@ private:
     string video_path_;
     int camera_id_;
     int frame_rate_;
-    int current_frames_;  // 视频总帧数
-    int total_frames_; // 当前播放帧数
+    int current_frames_ = 0;  // 视频总帧数
+    int total_frames_ = 0; // 当前播放帧数
 };
