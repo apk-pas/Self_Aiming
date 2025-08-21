@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     auto node = make_shared<VideoPublisher>();
 
     //传入视频节点的指针，共享同一个节点
-    ArmorProcessor armor_processor(node);
+    auto armor_processor = make_shared<ArmorProcessor>(node);
 
     //运行节点
     rclcpp::spin(node);

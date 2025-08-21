@@ -10,17 +10,10 @@ Mat ArmorProcessor::preprocess_image(const Mat& frame)
     cvtColor(frame, hsv, COLOR_BGR2HSV);
     inRange(hsv, Scalar(100, 100, 100), Scalar(130, 255, 255), armor);
     Mat kernel = getStructuringElement(MORPH_RECT, Size(3, 3));
-    for(int i=0;i<2;i++)
-    { 
-        dilate(armor,armor,kernel);
-    }
-    for(int i=0;i<2;i++)
-    {
-        erode(armor,armor,kernel);
-    }
+    dilate(armor,armor,kernel);
+    erode(armor,armor,kernel);
     morphologyEx(armor,armor,MORPH_CLOSE,kernel);
-    morphologyEx(armor,armor,MORPH_OPEN,kernel);
-    GaussianBlur(armor, armor, Size(3,3), 2, 2);
+    GaussianBlur(armor, armor, Size(3,3), 1);
     return armor;
 }
 
@@ -32,13 +25,13 @@ vector<RotatedRect> ArmorProcessor::detect_armors(const Mat& frame)
 
     for (const auto& contour : contours) 
     {
-        if (contourArea(contour) < 50) 
+        if (contourArea(contour) < 10) 
         {
             continue;
         }
         RotatedRect rect = minAreaRect(contour);
-        float ratio = max(rect.size.width, rect.size.height) / min(rect.size.width, rect.size.height);
-        if (ratio > 3 && ratio < 8) 
+        float ratio = rect.size.width / rect.size.height;
+        if (ratio > 0.3 && ratio < 0.6) 
         {
             armors.push_back(rect);
         }

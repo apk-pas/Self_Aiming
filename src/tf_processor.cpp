@@ -22,10 +22,10 @@ void ArmorProcessor::tf_callback(const sensor_msgs::msg::Image::SharedPtr msg)
 
             // 装甲板3D坐标（相对于自身中心）
             vector<Point3f> object_points;
-            object_points.emplace_back(-0.07, 0.0625, 0);
-            object_points.emplace_back(0.07, 0.0625, 0);
-            object_points.emplace_back(0.07, -0.0625, 0);
-            object_points.emplace_back(-0.07, -0.0625, 0);
+            object_points.emplace_back(-0.02, 0.04, 0);
+            object_points.emplace_back(0.02, 0.04, 0);
+            object_points.emplace_back(0.02, -0.04, 0);
+            object_points.emplace_back(-0.02, -0.04, 0);
 
             // 图像平面角点
             vector<Point2f> image_points;
@@ -65,6 +65,10 @@ void ArmorProcessor::tf_callback(const sensor_msgs::msg::Image::SharedPtr msg)
             transform.transform.rotation.w = quat.w();
 
             tf_broadcaster_->sendTransform(transform);
+        }
+        else
+        {
+            RCLCPP_INFO(node_->get_logger(), "未检测到任何装甲板,不发布TF");
         }
     } 
     catch (cv_bridge::Exception& e) 
