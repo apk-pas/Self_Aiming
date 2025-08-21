@@ -12,8 +12,8 @@ public:
     VideoPublisher(): rclcpp::Node("video_publisher")
     {
     // 声明参数并设置默认值
-    this->declare_parameter<string>("input_type", "camera");
-    this->declare_parameter<string>("video_path", "");
+    this->declare_parameter<string>("input_type", "video");
+    this->declare_parameter<string>("video_path", "/home/apk/rosdemo/src/self_aiming/videos/test.mp4");
     this->declare_parameter<int>("camera_id", 0);
     this->declare_parameter<int>("frame_rate", 30);
     
@@ -27,7 +27,8 @@ public:
     image_pub_ = image_transport::create_publisher(this, "image_raw");
     
     // 打开视频源
-    if (!open_video_source()) {
+    if (!open_video_source()) 
+    {
         RCLCPP_ERROR(this->get_logger(), "无法打开视频,退出程序");
         rclcpp::shutdown();
         return;
