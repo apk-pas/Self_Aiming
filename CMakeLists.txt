@@ -11,9 +11,6 @@ find_package(rclcpp REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(image_transport REQUIRED)
-find_package(tf2 REQUIRED)
-find_package(tf2_ros REQUIRED)
-find_package(geometry_msgs REQUIRED)
 find_package(OpenCV 4 REQUIRED)
 
 include_directories(./include)
@@ -21,7 +18,7 @@ include_directories(./include)
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 add_executable(self_aiming ${SOURCES})
 
-ament_target_dependencies(self_aiming PUBLIC rclcpp cv_bridge sensor_msgs image_transport geometry_msgs tf2 tf2_ros)
+ament_target_dependencies(self_aiming PUBLIC rclcpp cv_bridge sensor_msgs image_transport)
 
 target_link_libraries(self_aiming PUBLIC ${OpenCV_LIBS})
 target_include_directories(self_aiming PUBLIC ${OpenCV_INCLUDE_DIRS})

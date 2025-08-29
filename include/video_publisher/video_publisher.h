@@ -13,7 +13,7 @@ public:
     {
     // 声明参数并设置默认值
     this->declare_parameter<string>("input_type", "video");
-    this->declare_parameter<string>("video_path", "/home/apk/rosdemo/src/self_aiming/videos/test.mp4");
+    this->declare_parameter<string>("video_path", "/home/apk/rosdemo/src/self_aiming/videos/test1.mp4");
     this->declare_parameter<int>("camera_id", 0);
     this->declare_parameter<int>("frame_rate", 30);
     
