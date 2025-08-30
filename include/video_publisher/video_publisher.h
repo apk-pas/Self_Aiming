@@ -68,6 +68,6 @@ private:
     string video_path_;
     int camera_id_;
     int frame_rate_;
-    int current_frames_ = 0;  // 视频总帧数
-    int total_frames_ = 0; // 当前播放帧数
+    int current_frames_ = 0;
+    int total_frames_ = 0;
 };
